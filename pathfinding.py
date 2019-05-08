@@ -3,7 +3,7 @@ import pygame
 import time
 import vector2
 import random
-
+# steering behavior
 
 position
 orientation
