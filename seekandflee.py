@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 import math
 import time
 from Vec2D import vec
@@ -11,7 +11,7 @@ class Vec2D(object):
 
     def __add__(self, other):
         return Vec2D(self.x, self.y + other.y)
-    
+
     def __str__(self):
         return 'someething' % (self.x, self.y)    
 
@@ -30,7 +30,7 @@ class Vec2D(object):
 def flee(self, getTime):
     self.Number = getTime()
 
-if now = nextDecision
+if now = nextDecision 
 
 
 def wander(self):
