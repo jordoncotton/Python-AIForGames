@@ -1,7 +1,7 @@
 import math 
 import pygame
 import time
-from Vec2D import vec
+import vector2
 import random
 
 
@@ -27,8 +27,8 @@ class Seek:
         steering.linear = target.position - character.position
         steering.linear.normalize()
         steering.linear *= maxAcceleration
-    steering.angular = 0
-    return steering
+        steering.angular = 0
+        return steering
 
 class Arrive:
     character
@@ -175,3 +175,58 @@ class Separation:
                 direction.normalize()
                 steering.linear += strength * direction
             return steering
+
+if orientation.asVector() . direction >
+coneThreshold:
+# do the evasion
+else:
+# return no steering
+
+class CollisionAvoidance:
+    character, targets
+    maxAcceleration
+    radius # collision threshold
+    def getSteering():
+        shortestTime = infinity
+        firstTarget = None # target that will collide first
+        firstMinSeparation, firstDistance, firstRelativePos, firstRelativeVel
+        for target in targets:
+            relativePos = target.position − character.position
+            relativeVel = target.velocity − character.velocity
+            relativeSpeed = relativeVel.length()
+            timeToCollision = (relativePos . relativeVel) / (relativeSpeed ∗ relativeSpeed)
+            distance = relativePos.length()
+            minSeparation = distance−relativeSpeed∗shortestTime
+            if minSeparation > 2∗radius: 
+                continue
+            if timeToCollision > 0 and timeToCollision < shortestTime:
+                shortestTime = timeToCollision
+                firstTarget = target
+                firstMinSeparation = minSeparation
+                firstDistance = distance
+                firstRelativePos = relativePos
+                firstRelativeVel = relativeVel
+if not firstTarget: 
+    return None
+if firstMinSeparation <= 0 or distance < 2∗radius: # colliding
+    relativePos = firstTarget.position − character.position
+else:
+    relativePos = firstRelativePos + firstRelativeVel ∗ shortestTime
+    relativePos.normalize()
+    steering.linear = relativePos ∗ maxAcceleration
+    return steering
+
+class ObstacleAvoidance (Seek):
+collisionDetector
+avoidDistance
+lookahead
+# ... Other data from superclass ...
+    def getSteering():
+        rayVector = character.velocity
+        rayVector.normalize()
+        rayVector ∗= lookahead
+        collision = collisionDetector.getCollision(character.position, rayVector)
+        if not collision: 
+            return None
+            target = collision.position + collision.normal ∗ avoidDistance
+            return Seek.getSteering()
