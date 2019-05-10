@@ -1,14 +1,14 @@
 import math 
 import pygame
 import time
-import vector2
 import random
+import concretegame
 # steering behavior
-
-position
-orientation
-velocity
-rotation
+# why this wont work bruh
+position = None
+orientation= None
+velocity= None
+rotation= None
 def update(steering, maxSpeed, time):
     position += velocity * time
     orientation += rotation * time
@@ -19,11 +19,12 @@ def update(steering, maxSpeed, time):
         velocity *= maxSpeed
 
 class Seek:
-    character
-    target
-    maxAcceleration
-    def getSteering():
-        steering = new steeringOutput()
+    def __init__(self):
+        self.character= None
+        self.target= None
+        self.maxAcceleration= None
+    def getSteering(self):
+        steering = steeringOutput()
         steering.linear = target.position - character.position
         steering.linear.normalize()
         steering.linear *= maxAcceleration
@@ -31,13 +32,14 @@ class Seek:
         return steering
 
 class Arrive:
-    character
-    maxAcceleration
-    maxSpeed
-    targetRadius
-    slowRadius
+    def __init__(self):
+        self.character= None
+        self.maxAcceleration= None
+        self.maxSpeed= None
+        self.targetRadius= None
+        self.slowRadius= None
     timeToTarget = 0.1
-    steering = new steeringOutput()
+    steering = steeringOutput()
     direction = target.position - character.position
     distance = direction.length()
     if distance < targetRadius:
@@ -50,7 +52,7 @@ class Arrive:
         targetVelocity.normalize()
         targetVelocity *= targetSpeed
         steering.linear = targetVelocity - character.velocity
-        steering linear /= timeToTarget
+        steering.linear /= timeToTarget
         if steering.linear.length() > maxAcceleration:
             steering.linear.normalize()
             steering.linear *= maxAcceleration
@@ -58,48 +60,51 @@ class Arrive:
         return steering
 
 class Align:
-    character
-    target
-    maxAngularAcceleration
-    maxRotation
-    targetRadius
-    slowRadius
+    def __init__ (self):
+        self.character= None
+        self.target= None
+        self.maxAngularAcceleration= None
+        self.maxRotation= None
+        self.targetRadius= None
+        self.slowRadius= None
     timeToTarget = 0.1
     def getSteering(target):
-        steering = new steeringOutput()
+        steering = steeringOutput()
         rotation = target.orientation - character.orientation
         rotation = mapToRange(rotation)
-        rotationSize = abs(roationDirection)
+        rotationSize = abs(rotationDirection)
         if rotationSize < targetRadius:
             return None
         if rotationSize > slowRadius:
-            targetRotation maxRotation
+            targetRotation = maxRotation
         else:
             targetRotation = maxRotation * rotationSize / slowRadius
             targetRotation *= rotation / rotationSize
             steering.angular = targetRotation - character.rotation
             steering.angular /= timeToTarget
-            if angularAcceleration = abs(steering.angular):
-            steering.angular /= angularAcceleration
-            steering.angular *= maxAngularAcceleration
+            if maxAngularAcceleration is abs(steering.angular):
+                steering.angular /= maxAngularAcceleration
+                steering.angular *= maxAngularAcceleration
         steering.linear = 0
         return steering
 
 class VelocityMatch:
-    character
-    target
-    maxAcceleration
+    def __init__(self):
+        self.character= None
+        self.target= None
+        self.maxAcceleration= None
     def getSteering(target):
-        steering = new steeringOutput()
+        steering = steeringOutput()
         steering.linear = (target.velocity - character.velocity) / timeToTarget
-        if steering.linear.normalize()
-        steering.linear *= maxAcceleration
+        if steering.linear.normalize():
+            steering.linear *= maxAcceleration
     steering.angular = 0
     return steering
 
 class Pursue (Seek):
-    maxPrediction
-    target
+    def __init__(self):
+        self.maxPrediction= None
+        self.target= None
     def getSteering():
         direction = target.position = character.position
         distance = direction.length()
@@ -113,8 +118,9 @@ class Pursue (Seek):
             return Seek.getSteering()
 
 class Face (Align):
-    target
-    def getSteering:
+    def __init__ (self):
+        self.target= None
+    def getSteering():
         direction = target.position - character.position
         if direction.length() == 0:
             return target 
@@ -125,14 +131,15 @@ class Face (Align):
 class LookWhereYourGoing (Align):
     def getSteering():
         if character.velocity.length() == 0:
-            return target.orientation = atan2(=character.velocity.x, character.velocity.z)
+            return target.orientation == atan2(character.velocity.x, character.velocity.z)
             return Align.getSteering()
 
 class Wander (Face):
-    wanderOffset 
-    wanderRate
-    wanderOrientation
-    maxAcceleration
+    def __init__ (self):
+        self.wanderOffset = None
+        self.wanderRate= None
+        self.wanderOrientation= None
+        self.maxAcceleration= None
     def getSteering():
         wanderOrientation += (random(0.1) - random(0.1)) * wanderRate
         targetOrientation = wanderOrientation + character.orientation
@@ -143,9 +150,10 @@ class Wander (Face):
         return steering
 
 class FollowPath (Seek):
-    path 
-    pathOffset 
-    currentParam
+    def __init__(self):
+        self.path = None
+        self.pathOffset = None
+        self.currentParam= None
     predictTime = 0.1
     def getSteering():
         futurePos = character.position + character.velocity * predictTime
@@ -160,13 +168,14 @@ strength = maxAcceleration * (threshold - distance) / threshold
 strength = min(decayCoefficient / (distance * distance), maxAcceleration)
 
 class Separation:
-    character
-    targets
-    threshold
-    decayCoefficient
-    maxAcceleration
+    def __init__ (self):
+        self.character= None
+        self.targets= None
+        self.threshold= None
+        self.decayCoefficient= None
+        self.maxAcceleration= None
     def getSteering():
-        steering = new steering
+        steering = steering
         for target in targets:
             direction = target.position - character.position
             distance = direction.length()
@@ -176,28 +185,27 @@ class Separation:
                 steering.linear += strength * direction
             return steering
 
-if orientation.asVector() . direction >
-coneThreshold:
-# do the evasion
-else:
-# return no steering
-
 class CollisionAvoidance:
-    character, targets
-    maxAcceleration
-    radius # collision threshold
-    def getSteering():
+    def __init__ (self):
+        self.character= None 
+        self.targets= None
+        self.maxAcceleration= None
+        self.radius = None # collision threshold
+    def getSteering(self):
         shortestTime = infinity
         firstTarget = None # target that will collide first
-        firstMinSeparation, firstDistance, firstRelativePos, firstRelativeVel
-        for target in targets:
-            relativePos = target.position − character.position
-            relativeVel = target.velocity − character.velocity
+        firstMinSeparation= None 
+        firstDistance= None
+        firstRelativePos= None
+        firstRelativeVel= None
+        for target in self.targets:
+            relativePos = target.position − self.character.position
+            relativeVel = target.velocity − self.character.velocity
             relativeSpeed = relativeVel.length()
-            timeToCollision = (relativePos . relativeVel) / (relativeSpeed ∗ relativeSpeed)
+            timeToCollision = (relativePos * relativeVel) / (relativeSpeed * relativeSpeed)
             distance = relativePos.length()
-            minSeparation = distance−relativeSpeed∗shortestTime
-            if minSeparation > 2∗radius: 
+            minSeparation = distance − relativeSpeed * shortestTime
+            if minSeparation > 2 * radius: 
                 continue
             if timeToCollision > 0 and timeToCollision < shortestTime:
                 shortestTime = timeToCollision
@@ -206,27 +214,40 @@ class CollisionAvoidance:
                 firstDistance = distance
                 firstRelativePos = relativePos
                 firstRelativeVel = relativeVel
-if not firstTarget: 
-    return None
-if firstMinSeparation <= 0 or distance < 2∗radius: # colliding
-    relativePos = firstTarget.position − character.position
-else:
-    relativePos = firstRelativePos + firstRelativeVel ∗ shortestTime
-    relativePos.normalize()
-    steering.linear = relativePos ∗ maxAcceleration
-    return steering
+            if not firstTarget: 
+                return None
+            if firstMinSeparation <= 0 or distance < 2 * radius: # colliding
+                relativePos = firstTarget.position − character.position
+            else:
+                relativePos = firstRelativePos + firstRelativeVel * shortestTime
+                relativePos.normalize()
+            steering.linear = relativePos * maxAcceleration
+            return steering
 
-class ObstacleAvoidance (Seek):
-collisionDetector
-avoidDistance
-lookahead
+class ObstacleAvoidance(Seek):
+    def __init__(self):
+        self.collisionDetector= None
+        self.avoidDistance= None
+        self.lookahead= None
 # ... Other data from superclass ...
-    def getSteering():
+    def getSteering(self):
         rayVector = character.velocity
         rayVector.normalize()
-        rayVector ∗= lookahead
+        rayVector *= lookahead
         collision = collisionDetector.getCollision(character.position, rayVector)
         if not collision: 
             return None
-            target = collision.position + collision.normal ∗ avoidDistance
+            target = collision.position + collision.normal * avoidDistance
             return Seek.getSteering()
+            
+'''EXAMPLE MAIN'''
+from concretegame import ConcreteGame
+
+def main():
+    '''main execution func'''
+    game = ConcreteGame("Concrete Game")
+    # make gameobjects to participate in game
+    game.run()
+
+if __name__ == "__main__":
+    main()
